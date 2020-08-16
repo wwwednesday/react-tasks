@@ -1,0 +1,14 @@
+.todo-list-item
+  $this: &
+  cursor: pointer
+
+  &.is-important
+    font-weight: bold
+
+    #{$this}__btn
+      background-color: #007bff
+      i
+        color: #ffffff
+
+  &.is-done
+    text-decoration: line-through
