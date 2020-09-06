@@ -1,4 +1,4 @@
-export default class SwapiService {
+class SwapiService {
   _apiBase = 'https://swapi.dev/api';
 
   async getResourse(url) {
@@ -32,3 +32,7 @@ export default class SwapiService {
     return this.getResourse(`/starships/${id}`);
   }
 }
+
+const API = new SwapiService();
+
+export default API;
