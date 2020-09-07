@@ -20,8 +20,15 @@ class SwapiService {
     return this.getResourse('/planets');
   }
 
-  getPlanet(id) {
-    return this.getResourse(`/planets/${id}`);
+  async getPlanet(id) {
+    const planet = await this.getResourse(`/planets/${id}`);
+    return {
+      id,
+      name: planet.name,
+      population: planet.population,
+      populationPeriod: planet.population_period,
+      diameter: planet.diameter
+    };
   }
 
   getAllStarships() {

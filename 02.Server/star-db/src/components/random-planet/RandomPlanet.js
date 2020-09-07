@@ -1,63 +1,62 @@
 import React, { useState, useEffect } from 'react';
 
+import Spinner from 'components/spinner';
+
 import SwapiService from 'services/swapi-service';
 
 import './RandomPlanet.sass';
 
+const PlanetView = ({ planet }) => {
+  const {
+    id,
+    name,
+    population,
+    populationPeriod,
+    diameter
+  } = planet;
+
+  return (
+    <React.Fragment>
+      <div className="card-body flex-grow-0">
+        <img
+          src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`}
+          alt={name}
+        />
+      </div>
+      <div className="card-body">
+        <h4 className="card-title">{name}</h4>
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item">
+            <h5 className="d-inline-block">Population: {population}</h5>
+          </li>
+          <li className="list-group-item">
+            <h5 className="d-inline-block">Rotation period: {populationPeriod}</h5>
+          </li>
+          <li className="list-group-item">
+            <h5 className="d-inline-block">Diameter: {diameter}</h5>
+          </li>
+        </ul>
+      </div>
+    </React.Fragment>
+  );
+}
+
 const RandomPlanet = () => {
-  const [id, setId] = useState(0);
-  const [name, setName] = useState('');
-  const [population, setPopulation] = useState(0);
-  const [populationPeriod, setpopulationPeriod] = useState(0);
-  const [diameter, setDiameter] = useState(0);
+  const [planet, setPlanet] = useState(null);
 
   useEffect(() => {
-    setId(() => {
-      const randomId = Math.floor((Math.random() * 25) + 1);
+    const randomId = Math.floor((Math.random() * 25) + 1);
 
-      SwapiService
-        .getPlanet(randomId)
-        .then((data) => {
-          const {
-            name,
-            population,
-            diameter,
-            rotation_period
-          } = data;
-
-          setName(name);
-          setPopulation(population);
-          setpopulationPeriod(rotation_period);
-          setDiameter(diameter);
-        })
-      ;
-
-      return randomId;
-    });
+    SwapiService
+      .getPlanet(randomId)
+      .then((data) => setPlanet(data))
+    ;
   }, []);
 
   return (
     <div className="jumbotron random-planet">
-      <div className="card flex-row align-content-center justify-content-start">
-        <div className="card-body flex-grow-0">
-          <img
-            src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`}
-          />
-        </div>
-        <div className="card-body">
-          <h4 className="card-title">{name}</h4>
-          <ul className="list-group list-group-flush">
-            <li className="list-group-item">
-              <h5 className="d-inline-block">Population: {population}</h5>
-            </li>
-            <li className="list-group-item">
-              <h5 className="d-inline-block">Rotation period: {populationPeriod}</h5>
-            </li>
-            <li className="list-group-item">
-              <h5 className="d-inline-block">Diameter: {diameter}</h5>
-            </li>
-          </ul>
-        </div>
+      <div className="card flex-row align-content-center justify-content-center">
+        {planet ? <PlanetView planet={planet} /> : <Spinner />}
       </div>
     </div>
   );
